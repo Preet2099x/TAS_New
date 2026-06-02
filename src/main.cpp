@@ -24,10 +24,10 @@ int TRL = 0;
 int TLR = 0;
 int TLL = 0;
 
-int pwmPin_R = 14; //22
-int dirPin_R = 20; //22
-int pwmPin_L = 23; //11
-int dirPin_L = 22; //11
+int pwmPin_R = 5; //22
+int dirPin_R = 6; //22
+int pwmPin_L = 7; //11
+int dirPin_L = 8; //11
 
 
 unsigned int addressFLW =  0;
@@ -45,11 +45,11 @@ unsigned int addressTRL = 18;
 unsigned int addressTLR = 20;
 unsigned int addressTLL = 22;
 
-int encoderPin_1_L = 7;
-int encoderPin_2_L = 8;
+int encoderPin_1_L = 10;
+int encoderPin_2_L = 9;
 
-int encoderPin_1_R = 5;
-int encoderPin_2_R = 4;
+int encoderPin_1_R = 2;
+int encoderPin_2_R = 3;
 
 volatile int lastEncoded_L = 0;
 volatile long encoderValue_L = 0;

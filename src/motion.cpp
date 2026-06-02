@@ -58,8 +58,8 @@ void motion(int _data) {
 
     previousError = error;
 
-    int pwmL = (rpmAlter == 0 ? 205 : 240) - correction;
-    int pwmR = (rpmAlter == 0 ? 215 : 250) + correction;
+    int pwmL = 255 - correction;
+    int pwmR = 255 + correction;
 
 
     pwmL = constrain(pwmL, 0, 255);
@@ -100,9 +100,10 @@ void motion(int _data) {
 
     previousError = error;
 
-    int pwmL = (rpmAlter == 0 ? 205 : 240) + correction;
-    int pwmR = (rpmAlter == 0 ? 215 : 250) - correction;
-   
+    int pwmL = 255 - correction;
+    int pwmR = 255 + correction;
+
+
     pwmL = constrain(pwmL, 0, 255);
     pwmR = constrain(pwmR, 0, 255);
 
