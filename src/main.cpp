@@ -74,6 +74,10 @@ bool  systemCounter = false;
 
 //Control Variable
 int  data = 0;
+
+float avgRPM_L = 0;
+float avgRPM_R = 0;
+
 int rpmAlter_T = 0;
 int rpmAlter = 0;
 int _dirData = 0;
@@ -147,11 +151,9 @@ void loop() {
   //Handle Fliter
   static SMA<20> filter_L;
   double rpm_L = 0;
-  uint16_t avgRPM_L = 0;
 
   static SMA<20> filter_R;
   double rpm_R = 0;
-  uint16_t avgRPM_R = 0;
 
   int emergency = analogRead(pin_Emergency);//TODO: Comment if emergency is removed 
   
@@ -226,10 +228,11 @@ void loop() {
     long deltaL = encoderValue_L - lastencoderValue_L;
     long deltaR = encoderValue_R - lastencoderValue_R;
 
+
     rpm_L = ((abs(deltaL)* 60 * handletime(timeConstant)) / 4000.00); // Change According to the time constant.
     rpm_R = ((abs(deltaR)* 60 * handletime(timeConstant)) / 4000.00);
     lastencoderValue_L = encoderValue_L;
-    
+
     lastencoderValue_R = encoderValue_R;
     //rpm = (No of Pluses/Total Pules) * 1sec 
     //Total Pulse = Pulse * 4 where is changes in both the phases

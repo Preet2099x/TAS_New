@@ -13,6 +13,20 @@ float headingIntegral = 0;
 float previousError = 0;
 int lastDriveCommand = 0;
 
+// RPM PID
+float kpRPM = 1.0;
+float kiRPM = 0.02;
+float kdRPM = 0.1;
+
+float rpmIntegral_L = 0;
+float rpmIntegral_R = 0;
+
+float previousRPMError_L = 0;
+float previousRPMError_R = 0;
+
+float pwmOutput_L = 50;
+float pwmOutput_R = 50;
+
 void motion(int _data) {
 
   if(_data == 0) { 
@@ -20,6 +34,16 @@ void motion(int _data) {
     lastDriveCommand = 0;
     headingIntegral = 0;
     previousError = 0;
+
+
+    rpmIntegral_L = 0;
+    rpmIntegral_R = 0;
+
+    previousRPMError_L = 0;
+    previousRPMError_R = 0;
+
+    pwmOutput_L = 0;
+    pwmOutput_R = 0;
 
     digitalWrite(dirPin_L, LOW);
     digitalWrite(dirPin_R, LOW);
@@ -39,6 +63,16 @@ void motion(int _data) {
       targetHeading = heading;
       headingIntegral = 0;
       previousError = 0;
+
+
+      rpmIntegral_L = 0;
+      rpmIntegral_R = 0;
+
+      previousRPMError_L = 0;
+      previousRPMError_R = 0;
+
+      pwmOutput_L = 0;
+      pwmOutput_R = 0;
     }
 
     float error = targetHeading - heading;
@@ -58,15 +92,53 @@ void motion(int _data) {
 
     previousError = error;
 
-    int pwmL = (rpmAlter == 0 ? 205 : 240) - correction;
-    int pwmR = (rpmAlter == 0 ? 215 : 250) + correction;
+    // int pwmL = (rpmAlter == 0 ? 205 : 240) - correction;
+    // int pwmR = (rpmAlter == 0 ? 215 : 250) + correction;
 
+    // pwmL = constrain(pwmL, 0, 255);
+    // pwmR = constrain(pwmR, 0, 255);
 
-    pwmL = constrain(pwmL, 0, 255);
-    pwmR = constrain(pwmR, 0, 255);
+    // analogWrite(pwmPin_L, pwmL);
+    // analogWrite(pwmPin_R, pwmR);
 
-    analogWrite(pwmPin_L, pwmL);
-    analogWrite(pwmPin_R, pwmR);
+    float baseRPM = 70;
+
+    float targetRPM_L = baseRPM - correction;
+    float targetRPM_R = baseRPM + correction;
+
+    float errorRPM_L = targetRPM_L - avgRPM_L;
+    float errorRPM_R = targetRPM_R - avgRPM_R;
+
+    rpmIntegral_L += errorRPM_L;
+    rpmIntegral_R += errorRPM_R;
+
+    rpmIntegral_L = constrain(rpmIntegral_L, -500, 500);
+    rpmIntegral_R = constrain(rpmIntegral_R, -500, 500);
+
+    float derivativeRPM_L = errorRPM_L - previousRPMError_L;
+    float derivativeRPM_R = errorRPM_R - previousRPMError_R;
+
+    float correctionRPM_L =
+          kpRPM * errorRPM_L
+        + kiRPM * rpmIntegral_L
+        + kdRPM * derivativeRPM_L;
+
+    float correctionRPM_R =
+          kpRPM * errorRPM_R
+        + kiRPM * rpmIntegral_R
+        + kdRPM * derivativeRPM_R;
+
+    previousRPMError_L = errorRPM_L;
+    previousRPMError_R = errorRPM_R;
+
+    pwmOutput_L += correctionRPM_L;
+    pwmOutput_R += correctionRPM_R;
+
+    pwmOutput_L = constrain(pwmOutput_L, 0, 255);
+    pwmOutput_R = constrain(pwmOutput_R, 0, 255);
+
+    analogWrite(pwmPin_L, pwmOutput_L);
+    analogWrite(pwmPin_R, pwmOutput_R);
 
     lastDriveCommand = _data;
   } 
@@ -81,6 +153,16 @@ void motion(int _data) {
       targetHeading = heading;
       headingIntegral = 0;
       previousError = 0;
+
+
+      rpmIntegral_L = 0;
+      rpmIntegral_R = 0;
+
+      previousRPMError_L = 0;
+      previousRPMError_R = 0;
+
+      pwmOutput_L = 0;
+      pwmOutput_R = 0;
     }
 
     float error = targetHeading - heading;
@@ -100,15 +182,44 @@ void motion(int _data) {
 
     previousError = error;
 
-    int pwmL = (rpmAlter == 0 ? 205 : 240) + correction;
-    int pwmR = (rpmAlter == 0 ? 215 : 250) - correction;
-   
-    pwmL = constrain(pwmL, 0, 255);
-    pwmR = constrain(pwmR, 0, 255);
+    float baseRPM = 70;
 
-    analogWrite(pwmPin_L, pwmL);
-    analogWrite(pwmPin_R, pwmR);
+    float targetRPM_L = baseRPM + correction;
+    float targetRPM_R = baseRPM - correction;
 
+    float errorRPM_L = targetRPM_L - avgRPM_L;
+    float errorRPM_R = targetRPM_R - avgRPM_R;
+
+    rpmIntegral_L += errorRPM_L;
+    rpmIntegral_R += errorRPM_R;
+
+    rpmIntegral_L = constrain(rpmIntegral_L, -500, 500);
+    rpmIntegral_R = constrain(rpmIntegral_R, -500, 500);
+
+    float derivativeRPM_L = errorRPM_L - previousRPMError_L;
+    float derivativeRPM_R = errorRPM_R - previousRPMError_R;
+
+    float correctionRPM_L =
+          kpRPM * errorRPM_L
+        + kiRPM * rpmIntegral_L
+        + kdRPM * derivativeRPM_L;
+
+    float correctionRPM_R =
+          kpRPM * errorRPM_R
+        + kiRPM * rpmIntegral_R
+        + kdRPM * derivativeRPM_R;
+
+    previousRPMError_L = errorRPM_L;
+    previousRPMError_R = errorRPM_R;
+
+    pwmOutput_L += correctionRPM_L;
+    pwmOutput_R += correctionRPM_R;
+
+    pwmOutput_L = constrain(pwmOutput_L, 0, 255);
+    pwmOutput_R = constrain(pwmOutput_R, 0, 255);
+
+    analogWrite(pwmPin_L, pwmOutput_L);
+    analogWrite(pwmPin_R, pwmOutput_R);
 
     lastDriveCommand = _data;
 

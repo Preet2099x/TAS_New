@@ -81,6 +81,9 @@ extern unsigned int addressTLL;
 
 extern float heading;
 
+extern float avgRPM_L;
+extern float avgRPM_R;
+
 //float PID(float input);
 void readEEPROM();
 void printSetting();
@@ -104,5 +107,7 @@ float getDistance_L();
 float getDistance_R();
 float getDistance();
 void resetDistance();
+
+
 
 #endif
