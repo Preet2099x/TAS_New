@@ -1,6 +1,5 @@
 #include <string.h>
 #include <Arduino.h>
-#include <structure.h>
 
 #ifndef VAR_H
 #define VAR_H
