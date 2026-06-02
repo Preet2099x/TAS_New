@@ -5,14 +5,7 @@
 #ifndef VAR_H
 #define VAR_H
 
-extern imuData imu;
-extern uint8_t BNO_ADDR;  // I2C address of BNO
-extern uint8_t ACC_DATA_X_LSB;  // BNO register Acceleration Data X LSB
-extern uint8_t CALIB_STAT;  // BNO register SYS Calib Status <7:6>, GYR Calib Status <5:4>, ACC Calib Status <3:2>, MAG Calib Status <1:0>
-extern uint8_t OPR_MODE; // BNO register Operation Mode <3:0>
-extern uint8_t NDOF;
-
-extern char data;
+extern int data;
 
 //---------------------
 extern int pwmPin_L;
@@ -32,8 +25,8 @@ extern int encoderPin_2_L;
 extern volatile int lastEncoded_L;
 extern volatile long encoderValue_L;
 extern long lastencoderValue_L;
-extern int lastMSB_L;
-extern int lastLSB_L;
+// extern int lastMSB_L;
+// extern int lastLSB_L; remove if no downise is noticed
  
 //Encoder Pin R
 extern int encoderPin_1_R;
@@ -44,8 +37,8 @@ extern int encoderPin_2_R;
 extern volatile int lastEncoded_R;
 extern volatile long encoderValue_R;
 extern long lastencoderValue_R;
-extern int lastMSB_R;
-extern int lastLSB_R;
+// extern int lastMSB_R;
+// extern int lastLSB_R; remove if no downise is noticed
 
 extern float startTimeControlCounter; 
 extern float elaspedTimeControlCounter;
@@ -96,7 +89,7 @@ int handleEEPROMwrite(String _data, unsigned int address);
 void updateEncoder_L();
 void updateEncoder_R();
 
-void motion(char _data);
+void motion(int _data);
 
 uint32_t getTeensySerial();
 float calcAlphaEMA(float fn);

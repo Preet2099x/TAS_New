@@ -10,14 +10,6 @@
 
 int SLAVE_ADDRESS = 0x72;
 
-uint8_t BNO_ADDR =       0x28;  // I2C address of BNO
-uint8_t ACC_DATA_X_LSB = 0x08;  // BNO register Acceleration Data X LSB
-uint8_t CALIB_STAT =     0x35;  // BNO register SYS Calib Status <7:6>, GYR Calib Status <5:4>, ACC Calib Status <3:2>, MAG Calib Status <1:0>
-uint8_t OPR_MODE   =     0x3D; // BNO register Operation Mode <3:0>
-uint8_t NDOF       =     0x0C;
-
-imuData imu;
-
 int FLW = 0;
 int FRW = 0;
 int BLW = 0;
@@ -63,14 +55,14 @@ int encoderPin_2_R = 4;
 volatile int lastEncoded_L = 0;
 volatile long encoderValue_L = 0;
 long lastencoderValue_L = 0;
-int lastMSB_L = 0;
-int lastLSB_L = 0;
+// int lastMSB_L = 0; remove if no downise is noticed
+// int lastLSB_L = 0;
 
 volatile int lastEncoded_R = 0;
 volatile long encoderValue_R = 0;
 long lastencoderValue_R = 0;
-int lastMSB_R = 0;
-int lastLSB_R = 0;
+// int lastMSB_R = 0; remove if no downise is noticed
+// int lastLSB_R = 0;
 
 //DIR and PWM Data
 int    delayBrake = 50;
@@ -82,7 +74,7 @@ bool emergencyAlter = true;
 bool  systemCounter = false;
 
 //Control Variable
-char  data = '0';
+int  data = 0;
 int rpmAlter_T = 0;
 int rpmAlter = 0;
 int _dirData = 0;
@@ -146,14 +138,7 @@ void setup() {
 
   Serial5.write(0);
   Serial5.write(192);
-  /*
-  kire.setClock(400 * 1000);
-  kire.begin();                // initialize I2C
-  bno_write(BNO_ADDR, OPR_MODE, NDOF);
-  delay(1000);
 
-  threads.addThread(thread_func);
-  */
 }
 
 void loop() { 
@@ -188,28 +173,23 @@ void loop() {
         Serial.print(getTeensySerial());
          Serial.print(" | ");
          Serial.println("Motion Module");
-         data = char('0');
+         data = 0;
       } else if(_data == char('s')) {
         systemCounter = true;
         printAlter = false; //TODO: Can be Removed for fast testing
-        data = '0';//TODO: Can be Removed for fast testing
+        data = 0;//TODO: Can be Removed for fast testing
         printSetting();
       } else if(_data == char('p')) {
         printAlter =  !printAlter;
       } else if(_data == char('a')) {
-        if (data != '3' || data != '4' || data != '0') {
+        if (data != 3 & data != 4 & data != 0) {
             rpmAlter = !rpmAlter; 
       } } else if(_data == char('b')) {
-        if (data != '1' || data != '2' || data != '0') {
+        if (data != 1 & data != 2 & data != 0) {
             rpmAlter_T = !rpmAlter_T; 
       } } else if(_data != 10) {
         data = _data;
-        if(_data == data && elaspedTimeControlCounter < timeConstantControlCounter) {
-          startTimeControlCounter = currentTimeControlCounter;
-        } else {
-          data = _data;
-          startTimeControlCounter = currentTimeControlCounter;
-        }
+        startTimeControlCounter = currentTimeControlCounter;
       }  
     } else {
       String _data = Serial.readString();
@@ -224,19 +204,17 @@ void loop() {
   }
 
   if(elaspedTimeControlCounter > timeConstantControlCounter) {
-     data = '0'; //Commenting for Testing //TODO:
+     data = 0; //Commenting for Testing //TODO:
     startTimeControlCounter = currentTimeControlCounter;
   }
   
   if(emergency > 900) { 
     rpmAlter = false;
-    //Serial5.write(0);
-    //Serial5.write(128);
     digitalWrite(dirPin_L, LOW);
     digitalWrite(dirPin_R, LOW);
     analogWrite(pwmPin_L, 0);
     analogWrite(pwmPin_R, 0);
-    data = '0';
+    data = 0;
   } else if (emergency < 900) {
     motion(data);
   } 
@@ -259,31 +237,15 @@ void loop() {
     if(printAlter == true) {  
       Serial.print(data);
       Serial.print(" | ");
-      //Serial.print(rpmAlter);
-      //Serial.print(" | ");
-      //Serial.print(rpmAlter_T);
-      //Serial.print(" | ");
       Serial.print(emergency);
       Serial.print(" | ");
       Serial.print(avgRPM_L);
       Serial.print(" | ");
       Serial.print(avgRPM_R);
       Serial.print(" | ");
-      Serial.print(1.0/16*imu.eul_heading);
-      Serial.print(" | ");
-      Serial.print(1.0/16*imu.eul_roll);
-      Serial.print(" | ");
-      Serial.print(1.0/16*imu.eul_pitch);
-      Serial.print(" | ");
-      Serial.println(imu.temp);
-      /*Serial.print(" | ");
-      Serial.print((s.calib_stat >> 6) & 3);
-      Serial.print(" | ");
-      Serial.print((s.calib_stat >> 4) & 3);
-      Serial.print(" | ");
-      Serial.print((s.calib_stat >> 2) & 3);
-      Serial.print(" | ");
-      Serial.println((s.calib_stat >> 0) & 3); */
+      Serial.println();
+
+
    }
 
    encoderValue_L = encoderValue_R = 0;
