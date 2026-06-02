@@ -222,8 +222,15 @@ void loop() {
     startTime = currentTime;
 
     //RPM Calculation
-    rpm_L = ((abs(encoderValue_L)* 60 * handletime(timeConstant)) / 4000.00); // Change According to the time constant.
-    rpm_R = ((abs(encoderValue_R)* 60 * handletime(timeConstant)) / 4000.00);
+
+    long deltaL = encoderValue_L - lastencoderValue_L;
+    long deltaR = encoderValue_R - lastencoderValue_R;
+
+    rpm_L = ((abs(deltaL)* 60 * handletime(timeConstant)) / 4000.00); // Change According to the time constant.
+    rpm_R = ((abs(deltaR)* 60 * handletime(timeConstant)) / 4000.00);
+    lastencoderValue_L = encoderValue_L;
+    
+    lastencoderValue_R = encoderValue_R;
     //rpm = (No of Pluses/Total Pules) * 1sec 
     //Total Pulse = Pulse * 4 where is changes in both the phases
     //SEC -> MilliSec 60*100 -> TimeConstant will be 100
@@ -243,11 +250,11 @@ void loop() {
       Serial.print(avgRPM_R);
       Serial.print(" | ");
       Serial.println();
-
-
    }
 
-   encoderValue_L = encoderValue_R = 0;
+  //  encoderValue_L = encoderValue_R = 0; removing
+  // removing this causes to be reset at 0 every 100ms, 
+  // commented out to make distance and odomerty calculation possible
 
   }
 

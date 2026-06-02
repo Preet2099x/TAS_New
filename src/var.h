@@ -99,8 +99,10 @@ double handletime(float data);
 void receiveEvent(int bytesReceived);
 long map(long x, long in_min, long in_max, long out_min, long out_max);
 
-void thread_func();
-void bno_write(uint8_t i2c_addr, uint8_t reg, uint8_t data);
-void bno_read_multiple(uint8_t i2c_addr, uint8_t reg, uint8_t *buf, uint8_t length);
+
+float getDistance_L();
+float getDistance_R();
+float getDistance();
+void resetDistance();
 
 #endif
