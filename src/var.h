@@ -80,6 +80,8 @@ extern unsigned int addressTRL;
 extern unsigned int addressTLR;
 extern unsigned int addressTLL;
 
+extern float heading;
+
 //float PID(float input);
 void readEEPROM();
 void printSetting();

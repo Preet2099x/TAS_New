@@ -1,6 +1,8 @@
 #include <Wire.h>
-
+#include <var.h>
 #define BNO055_ADDR 0x28
+
+float heading = 0;
 
 int16_t read16(uint8_t reg) {
   Wire1.beginTransmission(BNO055_ADDR);
@@ -46,7 +48,7 @@ void bnoStandaloneSetup() {
 
 void bnoStandaloneLoop() {
   // Euler angles (deg * 16)
-  float heading = read16(0x1A) / 16.0;
+  heading = read16(0x1A) / 16.0;
   float roll    = read16(0x1C) / 16.0;
   float pitch   = read16(0x1E) / 16.0;
 
