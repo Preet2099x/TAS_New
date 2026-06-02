@@ -122,8 +122,15 @@ void motion(int _data) {
 
     digitalWrite(dirPin_L, LOW);
     digitalWrite(dirPin_R, HIGH);
-    analogWrite(pwmPin_L, rpmAlter_T == 0 ? 82 : 148);
-    analogWrite(pwmPin_R, rpmAlter_T == 0 ? 80: 146);
+
+    int pwm;
+
+    if(_data <14) pwm = 80;
+    else if(_data < 17) pwm = 130;
+    else pwm = 180; 
+
+    analogWrite(pwmPin_L, pwm);
+    analogWrite(pwmPin_R, pwm);
   } 
   
   else if (_data >= 21 && _data <= 30) 
@@ -134,8 +141,14 @@ void motion(int _data) {
 
     digitalWrite(dirPin_L, HIGH);
     digitalWrite(dirPin_R, LOW);
-    analogWrite(pwmPin_L, rpmAlter_T == 0 ? 83 :150);
-    analogWrite(pwmPin_R, rpmAlter_T == 0 ? 80 :147);
+
+    int pwm;
+    if(_data <24) pwm = 80;
+    else if(_data < 27) pwm = 130;
+    else pwm = 180;
+
+    analogWrite(pwmPin_L, pwm);
+    analogWrite(pwmPin_R, pwm);
   }  
   
   else if(_data >= 111 && _data <= 120) {
@@ -146,8 +159,28 @@ void motion(int _data) {
 
     digitalWrite(dirPin_L, LOW);
     digitalWrite(dirPin_R, LOW);
-    analogWrite(pwmPin_L, rpmAlter == 0 ? 204:245);
-    analogWrite(pwmPin_R, 150);  
+
+    int outerpwm;
+    int innerpwm;
+
+    if(_data <114) 
+    {
+      outerpwm = 180;
+      innerpwm = 140;
+    } 
+    else if(_data <117) 
+    {
+      outerpwm = 210;
+      innerpwm = 130;
+    } 
+    else 
+    {
+      outerpwm = 240;
+      innerpwm = 120;
+    }
+
+    analogWrite(pwmPin_L, outerpwm);
+    analogWrite(pwmPin_R, innerpwm);  
   } 
   
   else if(_data >= 121 && _data <= 130) {
@@ -158,8 +191,28 @@ void motion(int _data) {
 
     digitalWrite(dirPin_L, LOW);
     digitalWrite(dirPin_R, LOW);
-    analogWrite(pwmPin_L, 150);
-    analogWrite(pwmPin_R, rpmAlter == 0 ? 215 :250);
+
+    int outerpwm;
+    int innerpwm;
+
+    if(_data <124) 
+    {
+      outerpwm = 180;
+      innerpwm = 140;
+    } 
+    else if(_data <127) 
+    {
+      outerpwm = 210;
+      innerpwm = 130;
+    } 
+    else 
+    {
+      outerpwm = 240;
+      innerpwm = 120;
+    }
+
+    analogWrite(pwmPin_L, innerpwm);
+    analogWrite(pwmPin_R, outerpwm);
   } 
   
   else if(_data >= 211 && _data <= 220) {
@@ -170,8 +223,28 @@ void motion(int _data) {
     
     digitalWrite(dirPin_L, HIGH);
     digitalWrite(dirPin_R, HIGH);
-    analogWrite(pwmPin_L, rpmAlter == 0 ? 209 : 251);
-    analogWrite(pwmPin_R, 150); 
+    
+    int outerpwm;
+    int innerpwm;
+
+    if(_data <214) 
+    {
+      outerpwm = 180;
+      innerpwm = 140;
+    } 
+    else if(_data <217) 
+    {
+      outerpwm = 210;
+      innerpwm = 130;
+    } 
+    else 
+    {
+      outerpwm = 240;
+      innerpwm = 120;
+    }
+
+    analogWrite(pwmPin_L, outerpwm);
+    analogWrite(pwmPin_R, innerpwm); 
   } 
   
   else if(_data >= 221 && _data <= 230) {
@@ -182,8 +255,28 @@ void motion(int _data) {
 
     digitalWrite(dirPin_L, HIGH);
     digitalWrite(dirPin_R, HIGH);
-    analogWrite(pwmPin_L, 150);
-    analogWrite(pwmPin_R, rpmAlter == 0 ? 202 :245);
+
+    int outerpwm;
+    int innerpwm;
+
+    if(_data <224) 
+    {
+      outerpwm = 180;
+      innerpwm = 140;
+    } 
+    else if(_data <227) 
+    {
+      outerpwm = 210;
+      innerpwm = 130;
+    } 
+    else 
+    {
+      outerpwm = 240;
+      innerpwm = 120;
+    }
+
+    analogWrite(pwmPin_L, innerpwm);
+    analogWrite(pwmPin_R, outerpwm);
   } 
   
   else {} 
