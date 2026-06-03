@@ -84,6 +84,8 @@ extern float heading;
 extern float avgRPM_L;
 extern float avgRPM_R;
 
+extern bool rpmUpdated;
+
 //float PID(float input);
 void readEEPROM();
 void printSetting();

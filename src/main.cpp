@@ -78,6 +78,8 @@ int  data = 0;
 float avgRPM_L = 0;
 float avgRPM_R = 0;
 
+bool rpmUpdated = false;
+
 int rpmAlter_T = 0;
 int rpmAlter = 0;
 int _dirData = 0;
@@ -244,6 +246,8 @@ void loop() {
     
     avgRPM_L = filter_L(rpm_L);
     avgRPM_R = filter_R(rpm_R);
+
+    rpmUpdated = true;
 
 
     if(printAlter == true) {  
