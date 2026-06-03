@@ -175,7 +175,18 @@ void loop() {
   if(Serial.available()) {
     if(systemCounter == false) {
       int _data = Serial.read();
-      if(_data == char('m')) {
+      if(_data == char('T') || _data == char('t')) {
+        String cmd = Serial.readStringUntil('\n');
+        cmd.trim();
+
+        if(cmd.startsWith(":"))
+          cmd = cmd.substring(1);
+
+        if(loadTrack(cmd))
+          startTimeControlCounter = currentTimeControlCounter;
+        else
+          Serial.println("Track parse failed");
+      } else if(_data == char('m')) {
         Serial.print(getTeensySerial());
          Serial.print(" | ");
          Serial.println("Motion Module");
@@ -214,16 +225,23 @@ void loop() {
     startTimeControlCounter = currentTimeControlCounter;
   }
   
-  if(emergency > 900) { 
-    rpmAlter = false;
-    digitalWrite(dirPin_L, LOW);
-    digitalWrite(dirPin_R, LOW);
-    analogWrite(pwmPin_L, 0);
-    analogWrite(pwmPin_R, 0);
-    data = 0;
-  } else if (emergency < 900) {
-    motion(data);
+  if(emergency > 900) {
+      rpmAlter = false;
+      autonomousAbort(); 
+      digitalWrite(dirPin_L, LOW);
+      digitalWrite(dirPin_R, LOW);
+      analogWrite(pwmPin_L, 0);
+      analogWrite(pwmPin_R, 0);
+      data = 0;
+  }
+  else
+  {
+      autonomousUpdate();
+      motion(data);
   } 
+
+  autonomousUpdate();
+  motion(data);
   
   if (elaspedTime > timeConstant) {
     startTime = currentTime;
@@ -248,6 +266,7 @@ void loop() {
     avgRPM_R = filter_R(rpm_R);
 
     rpmUpdated = true;
+
 
 
     if(printAlter == true) {  

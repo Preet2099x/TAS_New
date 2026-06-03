@@ -113,6 +113,19 @@ float getDistance_R();
 float getDistance();
 void resetDistance();
 
+//AUTONOMOUS VariableS
+void autonomousUpdate();
+
+bool autonomousStartTrack();
+void autonomousAbort();
+
+bool autonomousIsRunning();
+bool autonomousIsPaused();
+
+bool loadTrack(String trackString);
+
+void clearTrack();
+bool addSegment(int type, float value);
 
 
 #endif
