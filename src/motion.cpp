@@ -71,8 +71,8 @@ void motion(int _data) {
       previousRPMError_L = 0;
       previousRPMError_R = 0;
 
-      pwmOutput_L = 0;
-      pwmOutput_R = 0;
+      pwmOutput_L = 50;
+      pwmOutput_R = 50;
     }
 
     float error = targetHeading - heading;
@@ -161,8 +161,8 @@ void motion(int _data) {
       previousRPMError_L = 0;
       previousRPMError_R = 0;
 
-      pwmOutput_L = 0;
-      pwmOutput_R = 0;
+      pwmOutput_L = 50;
+      pwmOutput_R = 50;
     }
 
     float error = targetHeading - heading;

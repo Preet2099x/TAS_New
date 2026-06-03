@@ -142,8 +142,8 @@ void setup() {
   readEEPROM();
   bnoStandaloneSetup();
 
-  Serial5.write(0);
-  Serial5.write(192);
+  // Serial5.write(0);
+  // Serial5.write(192);
 
 }
 
@@ -186,10 +186,10 @@ void loop() {
       } else if(_data == char('p')) {
         printAlter =  !printAlter;
       } else if(_data == char('a')) {
-        if (data != 3 & data != 4 & data != 0) {
+        if (data != 3 && data != 4 && data != 0) {
             rpmAlter = !rpmAlter; 
       } } else if(_data == char('b')) {
-        if (data != 1 & data != 2 & data != 0) {
+        if (data != 1 && data != 2 && data != 0) {
             rpmAlter_T = !rpmAlter_T; 
       } } else if(_data != 10) {
         data = _data;

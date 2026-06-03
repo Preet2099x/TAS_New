@@ -49,20 +49,26 @@ void bnoStandaloneSetup() {
 void bnoStandaloneLoop() {
   // Euler angles (deg * 16)
   heading = read16(0x1A) / 16.0;
-  float roll    = read16(0x1C) / 16.0;
-  float pitch   = read16(0x1E) / 16.0;
+  // float roll    = read16(0x1C) / 16.0;
+  // float pitch   = read16(0x1E) / 16.0;
 
-  // Gyroscope (deg/s * 16)
-  float gx = read16(0x14) / 16.0;
-  float gy = read16(0x16) / 16.0;
-  float gz = read16(0x18) / 16.0;
+  // // Gyroscope (deg/s * 16)
+  // float gx = read16(0x14) / 16.0;
+  // float gy = read16(0x16) / 16.0;
+  // float gz = read16(0x18) / 16.0;
 
-  Serial.print("H: "); Serial.print(heading);
-  Serial.print(" | P: "); Serial.print(pitch);
-  Serial.print(" | R: "); Serial.print(roll);
+  // Serial.print("H: "); Serial.print(heading);
+  // Serial.print(" | P: "); Serial.print(pitch);
+  // Serial.print(" | R: "); Serial.print(roll);
 
-  Serial.print(" || Gx: "); Serial.print(gx);
-  Serial.print(" Gy: "); Serial.print(gy);
-  Serial.print(" Gz: "); Serial.println(gz);
+  // Serial.print(" || Gx: "); Serial.print(gx);
+  // Serial.print(" Gy: "); Serial.print(gy);
+  // Serial.print(" Gz: "); Serial.println(gz);
 
+}
+
+void printBNO()
+{
+    Serial.print("H: ");
+    Serial.println(heading);
 }
