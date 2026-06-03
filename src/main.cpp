@@ -91,6 +91,8 @@ void setup() {
   Serial.begin(115200);
   //Serial5.begin(115200);//TODO: For Simplified Serial
   kire.begin(SLAVE_ADDRESS); 
+  kire.onReceive(receiveEvent);
+
   //initWire();
   
    //Motor Pin Setup
@@ -134,15 +136,15 @@ void setup() {
 
   //Read Permanent Data 
   readEEPROM();
+  bnoStandaloneSetup();
 
-  Serial5.write(0);
-  Serial5.write(192);
+  // Serial5.write(0);
+  // Serial5.write(192);
 
 }
 
 void loop() { 
-
-  kire.onReceive(receiveEvent);
+  bnoStandaloneLoop();
 
   //Handle Fliter
   static SMA<20> filter_L;

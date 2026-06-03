@@ -81,6 +81,9 @@ extern unsigned int addressTLL;
 
 extern float heading;
 
+void bnoStandaloneSetup();
+void bnoStandaloneLoop();
+
 //float PID(float input);
 void readEEPROM();
 void printSetting();

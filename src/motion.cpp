@@ -58,8 +58,8 @@ void motion(int _data) {
 
     previousError = error;
 
-    int pwmL = 255 - correction;
-    int pwmR = 255 + correction;
+    int pwmL = 230 - correction;
+    int pwmR = 230 + correction;
 
 
     pwmL = constrain(pwmL, 0, 255);
@@ -99,9 +99,9 @@ void motion(int _data) {
         + kdHeading * derivative;
 
     previousError = error;
-
-    int pwmL = 255 - correction;
-    int pwmR = 255 + correction;
+    
+    int pwmL = 230 + correction;
+    int pwmR = 230 - correction;
 
 
     pwmL = constrain(pwmL, 0, 255);

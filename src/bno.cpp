@@ -65,5 +65,5 @@ void bnoStandaloneLoop() {
   Serial.print(" Gy: "); Serial.print(gy);
   Serial.print(" Gz: "); Serial.println(gz);
 
-  delay(200);
+  // delay(200);
 }
