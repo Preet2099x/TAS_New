@@ -95,6 +95,9 @@ void updateEncoder_R();
 
 void motion(int _data);
 
+void bnoStandaloneSetup();
+void bnoStandaloneLoop();
+
 uint32_t getTeensySerial();
 float calcAlphaEMA(float fn);
 double handletime(float data);
